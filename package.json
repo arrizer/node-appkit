@@ -1,0 +1,23 @@
+{
+  "name": "appkit",
+  "description": "Node AppKit",
+  "version": "0.1.0",
+  "repository": "http://example.com/",
+  "private": true,
+  "main": "AppKit.coffee",
+  "dependencies": {
+    "async": "*",
+    "coffee-script": "*",
+    "commander": "^2.2.0",
+    "deppy": "*",
+    "express": "*",
+    "less": "*",
+    "hogan-express": "*",
+    "request": "*",
+    "body-parser": "*",
+    "serve-static": "*",
+    "sprintf": "*",
+    "cli-color": "*",
+    "fs-watch-tree": "*"
+  }
+}
