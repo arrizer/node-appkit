@@ -30,6 +30,7 @@ module.exports = class ClientTemplatesCompiler extends ClientCompiler
   compile: (next) ->
     return next() if @result?
     FileSystem.readdir @path, (error, files) =>
+      return next error if error?
       files = files.filter (file) => Path.extname(file) is '.html'
       files = files.map (file) => Path.join(@path, file)
       @result = []

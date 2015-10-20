@@ -12,6 +12,7 @@ module.exports = class ClientScriptCompiler extends ClientCompiler
     
   resolveDependencies: (next) ->
     FileSystem.readdir @path, (error, files) =>
+      return next error if error?
       files = files.filter (file) -> Path.extname(file) is '.coffee'
       graph = DependencyGraph.create()
       classFiles = {}
