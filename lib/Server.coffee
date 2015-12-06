@@ -41,13 +41,14 @@ module.exports = class Server
     app.use Static(Path.join(@config.libpath, "public"))
     @app = app
     
-  init: ->
+  init: (next) ->
     # subclass uses this to initialize
+    next()
     
   start: ->
-    @init()
-    @loadModule new Client(@)
-    @startServer()
+    @init =>
+      @loadModule new Client(@)
+      @startServer()
     
   loadModule: (module) ->
     log.info 'Loading module %s mounting to %s', module, module.urlPrefix
