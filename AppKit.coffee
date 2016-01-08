@@ -1,7 +1,9 @@
 #!/usr/bin/env coffee
 
 module.exports =
-  Server:       require('./lib/Server')
-  ServerModule: require('./lib/ServerModule')
-  Log:          require('./lib/Log')
-  JSONAPI:      require('./lib/JSONAPI')
+  Log:       require('./lib/Log')
+  Server:    require('./lib/Server')
+  ServerModule:    require('./lib/ServerModule')
+  JSONAPI:   require('./lib/JSONAPI')
+  Model:     require('./lib/Model')
+  Database:  require('./lib/Database')
