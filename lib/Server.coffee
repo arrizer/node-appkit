@@ -10,6 +10,7 @@ Log          = require './Log'
 Client       = require './Client'
 
 defaultConfig =
+  appname: 'App'
   serverModulesDir: 'server'
   clientScriptDir: 'client'
   clientTemplatesDir: 'client-templates'
