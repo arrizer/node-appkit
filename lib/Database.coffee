@@ -2,6 +2,18 @@ Path       = require 'path'
 FileSystem = require 'fs'
 Log        = require './Log'
 
+filter = (objects, predicate) ->
+  filtered = []
+  for object in objects
+    match = yes
+    for property, value of predicate
+      match = no if object[property] isnt value
+    filtered.push object if match
+  return filtered
+  
+sort = (objects, descriptors) ->
+  
+
 module.exports = class Database
   constructor: (@filename, @modelClasses) ->
     @log = Log.Module @constructor.name
@@ -66,12 +78,13 @@ module.exports = class Database
         data[object.id]._class = className
     return data
     
-  get: (Class, predicate) ->
+  get: (Class, predicate, order) ->
     className = Class.name
     result = []
     if @objects[className]?
       for id,object of @objects[className]
         result.push object
+    result = filter(result, predicate) if predicate?
     return result
 
   add: (object) ->
@@ -84,6 +97,5 @@ module.exports = class Database
     return object
     
   del: (object) ->
-    className = Class.name
+    className = object.constructor.name
     delete @objects[className][object.id]
-    @save()

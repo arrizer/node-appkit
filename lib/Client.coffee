@@ -1,12 +1,12 @@
 Path         = require 'path'
 Express      = require 'express'
-ServerModule = require './ServerModule'
+MountedServerModule = require './MountedServerModule'
 
 ClientScriptCompiler     = require './ClientScriptCompiler'
 ClientTemplatesCompiler  = require './ClientTemplatesCompiler'
 ClientStylesheetCompiler = require './ClientStylesheetCompiler'
 
-module.exports = class Client extends ServerModule
+module.exports = class Client extends MountedServerModule
   constructor: (@server) ->
     @scriptCompiler     = new ClientScriptCompiler(Path.join(@server.config.path, @server.config.clientScriptDir), yes)
     @templatesCompiler  = new ClientTemplatesCompiler(Path.join(@server.config.path, @server.config.clientTemplatesDir), yes)

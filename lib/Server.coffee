@@ -48,12 +48,23 @@ module.exports = class Server
     
   start: ->
     @init =>
-      @loadModule new Client(@)
       @startServer()
     
-  loadModule: (module) ->
-    log.info 'Loading module %s mounting to %s', module, module.urlPrefix
-    @app.use module.urlPrefix, module.router
+  loadModule: (module, next) ->
+    log.debug 'Loading module %s%s', module, (if module.urlPrefix? then " -> #{module.urlPrefix}" else '')
+    module.init =>
+      @app.use module.urlPrefix, module.router if module.router?
+      next(module) if next?
+    
+  loadModules: (moduleMap, next) ->
+    tasks = {}
+    for key,module of moduleMap
+      do (key,module) =>
+        tasks[key] = (done) => 
+          @loadModule module, (moduleRef) =>
+            @[key] = moduleRef
+            done()
+    Async.series tasks, next
       
   registerErrorHandlingRoutes: ->
     @app.use (err, req, res, next) ->

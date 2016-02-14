@@ -1,9 +1,11 @@
-ServerModule = require './ServerModule'
+MountedServerModule = require './MountedServerModule'
 
-module.exports = class JSONAPI extends ServerModule
+module.exports = class JSONAPI extends MountedServerModule
   constructor: (@server) ->
     super
     @urlPrefix = '/api'
+    @router.all '/*', (req,res) =>
+      res.fail 404, "API endpoint #{req.path} does not exist"
   
   mount: ->
     @router.use (req, res, next) =>
