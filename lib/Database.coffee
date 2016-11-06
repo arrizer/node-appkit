@@ -7,7 +7,7 @@ filter = (objects, predicate) ->
   for object in objects
     match = yes
     for property, value of predicate
-      match = no if object[property] isnt value
+      match = no if object[property].toString() isnt value.toString()
     filtered.push object if match
   return filtered
   
@@ -16,7 +16,7 @@ sort = (objects, descriptors) ->
 
 module.exports = class Database
   constructor: (@filename, @modelClasses) ->
-    @log = Log.Module @constructor.name
+    @log = Log.Module(@constructor.name + ' ' + Path.basename(@filename, '.json'))
     @objects = {}
     @nextID = 1
   
@@ -41,7 +41,6 @@ module.exports = class Database
     objectCount = 0
     for id,objectData of data
       className = objectData._class
-      className = 'Video' unless className?
       Class = null
       for ModelClass in @modelClasses
         if ModelClass.name is className
@@ -86,6 +85,10 @@ module.exports = class Database
         result.push object
     result = filter(result, predicate) if predicate?
     return result
+    
+  getFirst: (Class, predicate, order) ->
+    objects = @get Class, predicate, order
+    if objects.length >= 1 then return objects[0] else return null
 
   add: (object) ->
     id = ++@nextID
