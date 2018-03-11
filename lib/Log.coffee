@@ -1,4 +1,3 @@
-sprintf    = require('sprintf').sprintf
 CLIColor   = require 'cli-color'
 Path = require 'path'
 FileSystem = require 'fs'
@@ -87,8 +86,14 @@ module.exports = class Log
     line += @colorize('[' + @now() + '] ', 'white') if @timestamp
     line += @colorize('[' + level.toUpperCase().substring(0,1) + ']', LEVELS[level].colors...)
     line += @colorize(' [' + module + ']', 'white') if module? and module isnt @module
-    line += ' ' + @colorize(sprintf(message.toString(), parameters...), LEVELS[level].textColors...)
+    line += ' ' + @colorize(@format(message.toString(), parameters...), LEVELS[level].textColors...)
     @stream.write line + "\n", 'utf8' if @stream?
+
+  format: (message, parameters...) ->
+    result = string
+    for parameter in parameters
+      result = result.replace '%s', parameter
+    return result
     
   now: ->
     new Date().toString()

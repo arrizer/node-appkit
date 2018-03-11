@@ -16,7 +16,6 @@
     "request": "*",
     "body-parser": "*",
     "serve-static": "*",
-    "sprintf": "*",
     "cli-color": "*",
     "fs-watch-tree": "*"
   }
