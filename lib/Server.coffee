@@ -51,7 +51,7 @@ module.exports = class Server
       @startServer()
     
   loadModule: (module, next) ->
-    log.debug 'Loading module %s%s', module, (if module.urlPrefix? then " -> #{module.urlPrefix}" else '')
+    log.debug "Loading module #{module}#{(if module.urlPrefix? then " -> #{module.urlPrefix}" else '')}" 
     module.init =>
       @app.use module.urlPrefix, module.router if module.router?
       next(module) if next?
@@ -75,5 +75,5 @@ module.exports = class Server
   startServer: (next) ->
     @registerErrorHandlingRoutes()
     HTTP.createServer(@app).listen @app.get("port"), (error) =>
-      log.info "Server ready on port %f", @app.get("port")
+      log.info "Server ready on port #{@app.get("port")}"
       next error if next?

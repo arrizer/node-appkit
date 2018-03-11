@@ -66,7 +66,7 @@ module.exports = class Database
         @saving = no
         next() if next?
       else
-        @log.error 'Failed to save database: %s', error
+        @log.error "Failed to save database: #{error}"
         @saving = no
         
   serialize: ->

@@ -38,7 +38,7 @@ module.exports = class ClientScriptCompiler extends ClientCompiler
         orphans[unitname] = 1
         FileSystem.readFile file, (error, data) =>
           if error?
-            log.error "Could not read file %s: %s", file, error
+            log.error "Could not read file #{file}: #{error}"
             return next error 
           dependencies = []
           re = /^\s*#_require\s+(.+)\s*$/gim
@@ -53,7 +53,7 @@ module.exports = class ClientScriptCompiler extends ClientCompiler
         try
           unitnamesOrdered = graph.resolve '_'
         catch error
-          log.error "Failed to resolve dependency graph: %s", error
+          log.error "Failed to resolve dependency graph: #{error}"
           return next error
         unitnamesOrdered.pop()
         resolvedUnits = unitnamesOrdered.map (unitname) => unitsByName[unitname]
@@ -83,7 +83,7 @@ module.exports = class ClientScriptCompiler extends ClientCompiler
           try
             CoffeeScript.compile data
           catch error
-            log.error "Compilation of #{unit.path} failed:\n%s", error.toString()
+            log.error "Compilation of #{unit.path} failed:\n#{error.toString()}"
             log.bell()
             error.handled = yes
             return done error
