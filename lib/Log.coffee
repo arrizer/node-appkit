@@ -1,4 +1,3 @@
-sprintf    = require('sprintf').sprintf
 CLIColor   = require 'cli-color'
 Path = require 'path'
 FileSystem = require 'fs'
@@ -70,8 +69,8 @@ module.exports = class Log
     @paused = no
     for level of LEVELS
       do (level) =>
-        @[level] = (message, parameters...) =>
-          @log(@module, level, message, parameters...)
+        @[level] = (message) =>
+          @log(@module, level, message)
 
   colorize: (string, colors...) ->
     return string if !@colored or !colors? or colors.length == 0
@@ -80,14 +79,14 @@ module.exports = class Log
       chain = chain[color]
     return chain(string)
 
-  log: (module, level, message, parameters...) ->
-    log.log module, level, message, parameters... for log in @piped
+  log: (module, level, message) ->
+    log.log module, level, message for log in @piped
     return unless LEVELS[level].level >= @level
     line = ''
     line += @colorize('[' + @now() + '] ', 'white') if @timestamp
     line += @colorize('[' + level.toUpperCase().substring(0,1) + ']', LEVELS[level].colors...)
     line += @colorize(' [' + module + ']', 'white') if module? and module isnt @module
-    line += ' ' + @colorize(sprintf(message.toString(), parameters...), LEVELS[level].textColors...)
+    line += ' ' + @colorize(message.toString()), LEVELS[level].textColors...)
     @stream.write line + "\n", 'utf8' if @stream?
     
   now: ->
