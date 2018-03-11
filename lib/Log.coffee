@@ -86,7 +86,7 @@ module.exports = class Log
     line += @colorize('[' + @now() + '] ', 'white') if @timestamp
     line += @colorize('[' + level.toUpperCase().substring(0,1) + ']', LEVELS[level].colors...)
     line += @colorize(' [' + module + ']', 'white') if module? and module isnt @module
-    line += ' ' + @colorize(message.toString()), LEVELS[level].textColors...)
+    line += ' ' + @colorize(message.toString(), LEVELS[level].textColors...)
     @stream.write line + "\n", 'utf8' if @stream?
     
   now: ->
