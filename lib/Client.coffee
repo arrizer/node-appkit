@@ -7,11 +7,11 @@ ClientTemplatesCompiler  = require './ClientTemplatesCompiler'
 ClientStylesheetCompiler = require './ClientStylesheetCompiler'
 
 module.exports = class Client extends MountedServerModule
-  constructor: (@server) ->
+  constructor: (server) ->
+    super(server)
     @scriptCompiler     = new ClientScriptCompiler(Path.join(@server.config.path, @server.config.clientScriptDir), yes)
     @templatesCompiler  = new ClientTemplatesCompiler(Path.join(@server.config.path, @server.config.clientTemplatesDir), yes)
     @stylesheetCompiler = new ClientStylesheetCompiler(Path.join(@server.config.path, @server.config.clientStylesDir), yes)
-    super
   
   mount: ->
     # Client HTML

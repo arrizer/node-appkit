@@ -1,8 +1,8 @@
 MountedServerModule = require './MountedServerModule'
 
 module.exports = class JSONAPI extends MountedServerModule
-  constructor: (@server) ->
-    super
+  constructor: (server) ->
+    super(server)
     @urlPrefix = '/api'
     @router.all '/*', (req,res) =>
       res.fail 404, "API endpoint #{req.path} does not exist"
