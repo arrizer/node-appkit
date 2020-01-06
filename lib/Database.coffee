@@ -19,6 +19,7 @@ module.exports = class Database
     @log = Log.Module(@constructor.name + ' ' + Path.basename(@filename, '.json'))
     @objects = {}
     @nextID = 1
+    @saveCallbacks = []
   
   load: (next) ->
     FileSystem.exists @filename, (exists) =>
@@ -57,17 +58,19 @@ module.exports = class Database
     @log.debug 'Database loaded. %f objects.', objectCount
   
   save: (next) ->
+    @saveCallbacks.push(next) if next?
     return if @saving
     @saving = yes
     data = JSON.stringify(@serialize())
     FileSystem.writeFile @filename + '.atomic', data, (error) =>
       if !error?
         FileSystem.renameSync @filename + '.atomic', @filename
-        @saving = no
-        next() if next?
       else
         @log.error "Failed to save database: #{error}"
-        @saving = no
+      @saving = no
+      for callback in @saveCallbacks
+        callback(error)
+      @saveCallbacks = []
         
   serialize: ->
     data = {}
