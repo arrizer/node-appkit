@@ -68,9 +68,10 @@ module.exports = class Database
       else
         @log.error "Failed to save database: #{error}"
       @saving = no
-      for callback in @saveCallbacks
-        callback(error)
+      saveCallbacks = @saveCallbacks
       @saveCallbacks = []
+      for callback in saveCallbacks
+        callback(error)
         
   serialize: ->
     data = {}
